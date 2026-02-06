@@ -164,6 +164,21 @@ function Portfolio() {
       title: "Event Series",
       category: "Events",
     },
+    {
+      url: "images/Hs Blue 1.png",
+      title: "HS Blue Edition",
+      category: "Events",
+    },
+    {
+      url: "images/Hs Blue 2.png",
+      title: "HS Blue Edition",
+      category: "Events",
+    },
+    {
+      url: "images/Hs Blue 3.png",
+      title: "HS Blue Edition",
+      category: "Events",
+    },
   ];
 
   // Auto rotate testimonials
