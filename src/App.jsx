@@ -4,6 +4,7 @@ import WhoWeAre from "./components/WhoWeAre";
 import Portfolio from "./components/Portfolio";
 import HowWeWork from "./components/HowWeWork";
 import ProductDetails from "./components/ProductDetails";
+import NTokProducts from "./components/NTokProducts";
 import FoundersMessage from "./components/FoundersMessage";
 import PurificationProcess from "./components/PurificationProcess";
 import ContactUs from "./components/ContactUs";
@@ -21,6 +22,7 @@ function App() {
       <ProductDetails />
       <HowWeWork />
       <Portfolio />
+      <NTokProducts />
       <FoundersMessage />
       <PurificationProcess />
       <ContactUs />
