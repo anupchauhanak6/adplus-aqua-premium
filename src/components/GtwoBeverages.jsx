@@ -27,10 +27,7 @@ const products = [
     infoBg: "from-[#1e6b08] via-[#3aaa12] to-[#6acc1a]",
     accent: "#f2e030",
     // 2 ad banners — shown as slider inside the card (left panel)
-    images: [
-      "images/Zeera.jpeg",
-      "images/Zeera-2.jpeg",
-    ],
+    images: ["images/Zeera.jpeg", "images/Zeera-2.jpeg"],
     features: [
       { icon: <GiLemon />, text: "Refreshment Tanginess" },
       { icon: <FaFire />, text: "Masalaledaar Taste" },
@@ -72,30 +69,23 @@ const products = [
 export default function GtwoBeverages() {
   const [active, setActive] = useState(0);
   const [imgIdx, setImgIdx] = useState(0);
-  const [fading, setFading] = useState(false);
+  const [slideDir, setSlideDir] = useState(1); // 1 = slide from right (next), -1 = slide from left (prev)
   const [animTick, setAnimTick] = useState(0);
   const p = products[active];
   const multiImg = p.images.length > 1;
 
   // Image slide transition
-  const slideTo = useCallback(
-    (next) => {
-      if (fading) return;
-      setFading(true);
-      setTimeout(() => {
-        setImgIdx(next);
-        setFading(false);
-      }, 300);
-    },
-    [fading],
-  );
+  const slideTo = useCallback((next, dir = 1) => {
+    setSlideDir(dir);
+    setImgIdx(next);
+  }, []);
 
   const nextImg = useCallback(
-    () => slideTo((imgIdx + 1) % p.images.length),
+    () => slideTo((imgIdx + 1) % p.images.length, 1),
     [imgIdx, p.images.length, slideTo],
   );
   const prevImg = () =>
-    slideTo((imgIdx - 1 + p.images.length) % p.images.length);
+    slideTo((imgIdx - 1 + p.images.length) % p.images.length, -1);
 
   // Auto-slide every 5 sec (only for Zeera which has 2 images)
   useEffect(() => {
@@ -125,6 +115,14 @@ export default function GtwoBeverages() {
         @keyframes imgProgress {
           from { width: 0% }
           to   { width: 100% }
+        }
+        @keyframes slideFromRight {
+          from { transform: translateX(100%); }
+          to   { transform: translateX(0); }
+        }
+        @keyframes slideFromLeft {
+          from { transform: translateX(-100%); }
+          to   { transform: translateX(0); }
         }
       `}</style>
 
@@ -170,57 +168,52 @@ export default function GtwoBeverages() {
         </div>
 
         {/* ── Main Card ── */}
-        <div className="rounded-[2rem] overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-2 min-h-[420px]">
-          {/* LEFT — Image Panel (slider for Zeera, single for Litchi) */}
+        <div className="rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+          {/* LEFT — Image panel — object-contain so full banner is always visible */}
           <div
-            className="relative overflow-hidden group bg-black"
-            style={{ minHeight: 320 }}
+            className="relative flex-shrink-0 lg:w-[60%] group overflow-hidden"
+            style={{
+              background: p.color === "green" ? "#3aaa12" : "#0e8fa8",
+              minHeight: 280,
+            }}
           >
             <img
               key={`${active}-${imgIdx}`}
               src={p.images[imgIdx]}
               alt={p.name}
-              className={`w-full h-full object-cover transition-opacity duration-300 ${
-                fading ? "opacity-0" : "opacity-100"
-              }`}
-              style={{ minHeight: 320 }}
-            />
-
-            {/* Gradient overlay on right edge to blend into info panel */}
-            <div
-              className="absolute inset-y-0 right-0 w-16 pointer-events-none hidden lg:block"
+              className="w-full h-full object-contain block"
               style={{
-                background: `linear-gradient(to right, transparent, ${
-                  p.color === "green" ? "#3aaa12" : "#1a9dbb"
-                })`,
+                animation: `${
+                  slideDir === 1 ? "slideFromRight" : "slideFromLeft"
+                } 0.38s cubic-bezier(0.25,0.46,0.45,0.94) both`,
               }}
             />
 
-            {/* Arrows — only if multiple images */}
+            {/* Slider controls — only if multiple images */}
             {multiImg && (
               <>
                 <button
                   onClick={prevImg}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/65 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
                 >
-                  <FaChevronLeft size={13} />
+                  <FaChevronLeft size={12} />
                 </button>
                 <button
                   onClick={nextImg}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/65 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
                 >
-                  <FaChevronRight size={13} />
+                  <FaChevronRight size={12} />
                 </button>
 
                 {/* Dot indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-2">
                   {p.images.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => slideTo(i)}
                       className="rounded-full transition-all duration-300"
                       style={{
-                        width: imgIdx === i ? 24 : 8,
+                        width: imgIdx === i ? 22 : 8,
                         height: 8,
                         background:
                           imgIdx === i ? "#fff" : "rgba(255,255,255,0.45)",
@@ -241,11 +234,11 @@ export default function GtwoBeverages() {
             )}
           </div>
 
-          {/* RIGHT — Info Panel */}
+          {/* RIGHT — Info panel */}
           <div
-            className={`bg-gradient-to-br ${p.infoBg} relative overflow-hidden flex flex-col justify-center`}
+            className={`flex-1 bg-gradient-to-br ${p.infoBg} relative overflow-hidden flex flex-col justify-center`}
           >
-            {/* bg glow blobs */}
+            {/* glow blobs */}
             <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-16 -left-16 w-60 h-60 bg-black/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -272,17 +265,17 @@ export default function GtwoBeverages() {
               <h3
                 className="font-black leading-none mb-2"
                 style={{
-                  fontSize: "clamp(3rem, 7vw, 4.5rem)",
+                  fontSize: "clamp(2.8rem, 5vw, 4rem)",
                   fontStyle: "italic",
                   color: p.accent,
-                  textShadow: "3px 4px 0 rgba(0,0,0,0.22)",
+                  textShadow: "3px 4px 0 rgba(0,0,0,0.25)",
                 }}
               >
                 {p.name}
               </h3>
 
-              <p className="text-white/60 font-semibold text-sm mb-5 tracking-wide flex items-center gap-3">
-                {p.tagline} &nbsp;·&nbsp; {p.size}
+              <p className="text-white/70 font-semibold text-sm mb-5 tracking-wide flex flex-wrap items-center gap-3">
+                {p.tagline}&nbsp;·&nbsp;{p.size}
                 {p.price && (
                   <span
                     className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full font-black text-gray-900 text-xs"
@@ -353,7 +346,7 @@ export default function GtwoBeverages() {
 
               {/* Badge */}
               <div
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-gray-900 text-sm shadow-xl"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-gray-900 text-sm shadow-xl w-fit"
                 style={{ background: p.accent }}
               >
                 <FaSun className="text-orange-500" />
