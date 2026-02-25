@@ -4,18 +4,6 @@ import { FaQuoteLeft, FaHeart, FaLightbulb } from "react-icons/fa";
 function FoundersMessage() {
   const founders = [
     {
-      name: "Dr. Arif Siddiqui",
-      role: "Co-Founder",
-      message:
-        "Ek healthcare professional hone ke nate, main jaanta hoon ki shuddh paani hamari health ke liye kitna zaruri hai. Aur ek entrepreneur hone ke nate, main maanta hoon ki har brand ke liye sabse zaruri hota hai advertisement and marketing, to kyu na in dono ko ek sath jod diya jaye to isi soch ke sath hamne shuru kiya Adplus.aqua - purity aur personalization ka perfect combination.",
-      vision:
-        "Humara aim hai ki har bottle ke zariye logon tak ek soch, ek style aur ek standard pahunchayein.",
-      color: "from-cyan-500 to-blue-600",
-      icon: <FaHeart />,
-      image:
-        "images/dr.jpg",
-    },
-    {
       name: "Eng. Subhan Khan",
       role: "Co-Founder",
       message:
@@ -24,8 +12,7 @@ function FoundersMessage() {
         "Aaj Adplus.aqua isi soch ko aage badha raha hai - har bottle ek story, har sip ek experience.",
       color: "from-blue-500 to-cyan-600",
       icon: <FaLightbulb />,
-      image:
-        "images/Eng.jpg",
+      image: "images/Eng.jpg",
     },
   ];
 
@@ -53,12 +40,12 @@ function FoundersMessage() {
             </p>
           </div>
 
-          {/* Founders Cards - FIXED HEIGHT ALIGNMENT */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          {/* Founders Cards - CENTERED */}
+          <div className="flex justify-center mb-16">
             {founders.map((founder, index) => (
               <div
                 key={index}
-                className="bg-white/90 backdrop-blur-md rounded-3xl p-8 border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-cyan-400 flex flex-col h-full"
+                className="bg-white/90 backdrop-blur-md rounded-3xl p-8 border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-cyan-400 flex flex-col max-w-2xl w-full"
               >
                 {/* Image - LARGE AND CENTERED */}
                 <div className="flex justify-center mb-6">

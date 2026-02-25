@@ -38,7 +38,7 @@ function ContactUs() {
     {
       icon: <FaPhone />,
       title: "Phone Numbers",
-      details: ["+91 9458381868", "+91 9286101180", "+91 7895128076"],
+      details: ["+91 9458381868", "+91 9286101180"],
       color: "from-cyan-400 to-blue-500",
       action: "tel:+919458381868",
     },
