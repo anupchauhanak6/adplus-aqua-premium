@@ -5,6 +5,7 @@ import Portfolio from "./components/Portfolio";
 import HowWeWork from "./components/HowWeWork";
 import ProductDetails from "./components/ProductDetails";
 import NTokProducts from "./components/NTokProducts";
+import GtwoBeverages from "./components/GtwoBeverages";
 import FoundersMessage from "./components/FoundersMessage";
 import PurificationProcess from "./components/PurificationProcess";
 import ContactUs from "./components/ContactUs";
@@ -25,6 +26,7 @@ function App() {
       <NTokProducts />
       <FoundersMessage />
       <PurificationProcess />
+      <GtwoBeverages />
       <ContactUs />
       <Footer />
     </div>
